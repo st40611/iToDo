@@ -19,6 +19,8 @@
 		44FA5F1417ADA03100801FCA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44FA5EFC17ADA03100801FCA /* UIKit.framework */; };
 		44FA5F1C17ADA03100801FCA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44FA5F1A17ADA03100801FCA /* InfoPlist.strings */; };
 		44FA5F1E17ADA03100801FCA /* iToDoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FA5F1D17ADA03100801FCA /* iToDoTests.m */; };
+		44FA5F2D17ADA0A500801FCA /* ToDoList.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FA5F2B17ADA0A500801FCA /* ToDoList.m */; };
+		44FA5F2E17ADA0A500801FCA /* ToDoList.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44FA5F2C17ADA0A500801FCA /* ToDoList.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,9 @@
 		44FA5F1917ADA03100801FCA /* iToDoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iToDoTests-Info.plist"; sourceTree = "<group>"; };
 		44FA5F1B17ADA03100801FCA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		44FA5F1D17ADA03100801FCA /* iToDoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iToDoTests.m; sourceTree = "<group>"; };
+		44FA5F2A17ADA0A500801FCA /* ToDoList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToDoList.h; sourceTree = "<group>"; };
+		44FA5F2B17ADA0A500801FCA /* ToDoList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToDoList.m; sourceTree = "<group>"; };
+		44FA5F2C17ADA0A500801FCA /* ToDoList.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToDoList.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +116,9 @@
 				44FA5F0817ADA03100801FCA /* AppDelegate.m */,
 				44FA5F0A17ADA03100801FCA /* Images.xcassets */,
 				44FA5EFF17ADA03100801FCA /* Supporting Files */,
+				44FA5F2A17ADA0A500801FCA /* ToDoList.h */,
+				44FA5F2B17ADA0A500801FCA /* ToDoList.m */,
+				44FA5F2C17ADA0A500801FCA /* ToDoList.xib */,
 			);
 			path = iToDo;
 			sourceTree = "<group>";
@@ -219,6 +227,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44FA5F2E17ADA0A500801FCA /* ToDoList.xib in Resources */,
 				44FA5F0317ADA03100801FCA /* InfoPlist.strings in Resources */,
 				44FA5F0B17ADA03100801FCA /* Images.xcassets in Resources */,
 			);
@@ -239,6 +248,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44FA5F2D17ADA0A500801FCA /* ToDoList.m in Sources */,
 				44FA5F0917ADA03100801FCA /* AppDelegate.m in Sources */,
 				44FA5F0517ADA03100801FCA /* main.m in Sources */,
 			);
