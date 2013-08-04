@@ -368,6 +368,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iToDo/iToDo-Prefix.pch";
 				INFOPLIST_FILE = "iToDo/iToDo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -381,6 +382,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iToDo/iToDo-Prefix.pch";
 				INFOPLIST_FILE = "iToDo/iToDo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -445,6 +447,7 @@
 				44FA5F2317ADA03100801FCA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		44FA5F2417ADA03100801FCA /* Build configuration list for PBXNativeTarget "iToDoTests" */ = {
 			isa = XCConfigurationList;
@@ -453,6 +456,7 @@
 				44FA5F2617ADA03100801FCA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

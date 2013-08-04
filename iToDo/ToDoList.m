@@ -14,6 +14,7 @@
 - (void)addItem;
 
 @property (nonatomic, strong) NSMutableArray *entryItems;
+@property (nonatomic, strong) NSMutableArray *dates;
 
 @end
 
@@ -29,6 +30,7 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItem)];
         
         self.entryItems = [NSMutableArray array];
+        self.dates = [NSMutableArray array];
         //[self load];
     }
     return self;
@@ -64,8 +66,12 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     UITextField *item = [self.entryItems objectAtIndex:indexPath.row];
-    item.frame = CGRectMake(20, 0, cell.contentView.frame.size.width - 15, cell.contentView.frame.size.height);
+    UITextField *date = [self.dates objectAtIndex:indexPath.row];
+    
+    item.frame = CGRectMake(80, 0, cell.contentView.frame.size.width - 125, cell.contentView.frame.size.height);
     [cell.contentView addSubview:item];
+    date.frame = CGRectMake(20, 0, 50, cell.contentView.frame.size.height);
+    [cell.contentView addSubview:date];
     
     // Configure the cell...
     
@@ -91,6 +97,7 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
     [self.entryItems exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+    [self.dates exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
 }
 
 #pragma mark - UITextField delegate
@@ -107,12 +114,24 @@
 #pragma mark - Private methods
 
 - (void)addItem {
-    // Create a new textfield to hold the new todo item
+    // Automatically attach today's date to it
+    NSDate *now = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM/dd"];
+    NSString *stringFromDate = [formatter stringFromDate:now];
+    
+    // Add the entry
     UITextField *textField = [[UITextField alloc] init];
     textField.delegate = self;
     NSInteger count = self.entryItems.count;
     [self.entryItems insertObject:textField atIndex:count];
     
+    // Add the date
+    UITextField *date = [[UITextField alloc] init];
+    date.delegate = self;
+    date.text = stringFromDate;
+    [self.dates insertObject:date atIndex:count];
+
     // Focus the cursor on the new todo item and show the keyboard
     [textField becomeFirstResponder];
     
