@@ -12,9 +12,12 @@
 
 // Declare private variables and functions
 - (void)addItem;
+- (void)save;
 
 @property (nonatomic, strong) NSMutableArray *entryItems;
+@property (nonatomic, strong) NSMutableArray *entryItemsData;
 @property (nonatomic, strong) NSMutableArray *dates;
+@property (nonatomic, strong) NSMutableArray *datesData;
 
 @end
 
@@ -31,6 +34,8 @@
         
         self.entryItems = [NSMutableArray array];
         self.dates = [NSMutableArray array];
+        self.entryItemsData = [NSMutableArray array];
+        self.datesData = [NSMutableArray array];
         //[self load];
     }
     return self;
@@ -38,6 +43,30 @@
 
 - (void)viewDidLoad
 {
+    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *entryPlistPath = [rootPath stringByAppendingPathComponent:@"iToDoEntries.plist"];
+    NSString *datesPlistPath = [rootPath stringByAppendingPathComponent:@"iToDoDates.plist"];
+    
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:entryPlistPath] &&
+                        [[NSFileManager defaultManager] fileExistsAtPath:datesPlistPath];
+    
+	if (fileExists) {
+		NSMutableArray *values = [[NSMutableArray alloc] initWithContentsOfFile:entryPlistPath];
+        for (NSString *entry in values) {
+            UITextField *temp = [[UITextField alloc] init];
+            temp.delegate = self;
+            temp.text = entry;
+            [self.entryItems addObject:temp];
+        }
+        NSMutableArray *dates = [[NSMutableArray alloc] initWithContentsOfFile:datesPlistPath];
+        for (NSString *date in dates) {
+            UITextField *temp = [[UITextField alloc] init];
+            temp.delegate = self;
+            temp.text = date;
+            [self.dates addObject:temp];
+        }
+	}
+    
     [super viewDidLoad];
 }
 
@@ -108,7 +137,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    //[self save];
+    [self save];
 }
 
 #pragma mark - Private methods
@@ -137,6 +166,25 @@
     
     // Animate the insertion of the new todo item
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:count inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)save {
+    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *entryPlistPath = [rootPath stringByAppendingPathComponent:@"iToDoEntries.plist"];
+    NSString *datesPlistPath = [rootPath stringByAppendingPathComponent:@"iToDoDates.plist"];
+    [self.entryItemsData removeAllObjects];
+    [self.datesData removeAllObjects];
+    
+    for (UITextField *entry in self.entryItems) {
+        [self.entryItemsData addObject:entry.text];
+    }
+    
+    for (UITextField *date in self.dates) {
+        [self.datesData addObject:date.text];
+    }
+    
+    [self.entryItemsData writeToFile:entryPlistPath atomically:YES];
+    [self.datesData writeToFile:datesPlistPath atomically:YES];
 }
 
 @end
