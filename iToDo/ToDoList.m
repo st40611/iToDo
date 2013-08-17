@@ -36,36 +36,35 @@
         self.dates = [NSMutableArray array];
         self.entryItemsData = [NSMutableArray array];
         self.datesData = [NSMutableArray array];
-        //[self load];
+        
+        NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *entryPlistPath = [rootPath stringByAppendingPathComponent:@"iToDoEntries.plist"];
+        NSString *datesPlistPath = [rootPath stringByAppendingPathComponent:@"iToDoDates.plist"];
+        
+        BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:entryPlistPath] &&
+        [[NSFileManager defaultManager] fileExistsAtPath:datesPlistPath];
+        
+        if (fileExists) {
+            NSMutableArray *values = [[NSMutableArray alloc] initWithContentsOfFile:entryPlistPath];
+            for (NSString *entry in values) {
+                UITextField *temp = [[UITextField alloc] init];
+                temp.delegate = self;
+                temp.text = entry;
+                [self.entryItems addObject:temp];
+            }
+            NSMutableArray *dates = [[NSMutableArray alloc] initWithContentsOfFile:datesPlistPath];
+            for (NSString *date in dates) {
+                UILabel *temp = [[UILabel alloc] init];
+                temp.text = date;
+                [self.dates addObject:temp];
+            }
+        }
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
-    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *entryPlistPath = [rootPath stringByAppendingPathComponent:@"iToDoEntries.plist"];
-    NSString *datesPlistPath = [rootPath stringByAppendingPathComponent:@"iToDoDates.plist"];
-    
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:entryPlistPath] &&
-                        [[NSFileManager defaultManager] fileExistsAtPath:datesPlistPath];
-    
-	if (fileExists) {
-		NSMutableArray *values = [[NSMutableArray alloc] initWithContentsOfFile:entryPlistPath];
-        for (NSString *entry in values) {
-            UITextField *temp = [[UITextField alloc] init];
-            temp.delegate = self;
-            temp.text = entry;
-            [self.entryItems addObject:temp];
-        }
-        NSMutableArray *dates = [[NSMutableArray alloc] initWithContentsOfFile:datesPlistPath];
-        for (NSString *date in dates) {
-            UITextField *temp = [[UITextField alloc] init];
-            temp.delegate = self;
-            temp.text = date;
-            [self.dates addObject:temp];
-        }
-	}
     
     [super viewDidLoad];
 }
@@ -73,6 +72,11 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
+    [super touchesBegan:touches withEvent:event];
 }
 
 #pragma mark - Table view data source
@@ -95,7 +99,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     UITextField *item = [self.entryItems objectAtIndex:indexPath.row];
-    UITextField *date = [self.dates objectAtIndex:indexPath.row];
+    UILabel *date = [self.dates objectAtIndex:indexPath.row];
     
     item.frame = CGRectMake(80, 0, cell.contentView.frame.size.width - 125, cell.contentView.frame.size.height);
     [cell.contentView addSubview:item];
@@ -112,9 +116,19 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if ([cell.contentView subviews]){
+            for (UIView *subview in [cell.contentView subviews]) {
+                [subview removeFromSuperview];
+            }
+        }
+        
         [self.entryItems removeObjectAtIndex:indexPath.row];
+        [self.dates removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+        [self save];
+        
+    }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
@@ -156,8 +170,7 @@
     [self.entryItems insertObject:textField atIndex:count];
     
     // Add the date
-    UITextField *date = [[UITextField alloc] init];
-    date.delegate = self;
+    UILabel *date = [[UILabel alloc] init];
     date.text = stringFromDate;
     [self.dates insertObject:date atIndex:count];
 
@@ -179,7 +192,7 @@
         [self.entryItemsData addObject:entry.text];
     }
     
-    for (UITextField *date in self.dates) {
+    for (UILabel *date in self.dates) {
         [self.datesData addObject:date.text];
     }
     
